@@ -7,7 +7,7 @@ A simple test runner written in POSIX shell.
 
 Write a couple of quick tests:
 ```
-# ./tests/a/test_not_equal.sh
+# tests/a/test_not_equal.sh
 
 test_1_is_not_equal_to_0 ()
 {
@@ -39,7 +39,7 @@ foo ()
 
 Run all tests:
 ```
-$ ./shtest tests/b
+$ ./shtest
 test_1_is_not_equal_to_0...OK
 test_foo_prints_bar...FAILED:
 'foo' printed 'foo', expected 'bar'
