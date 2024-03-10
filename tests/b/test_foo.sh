@@ -6,5 +6,6 @@ test_foo_prints_bar ()
 {
     actual=$(foo)
     expected='bar'
-    assert "$actual" "$expected" "'foo' printed '$actual', expected '$expected'"
+    msg="'foo' printed '$actual', expected '$expected'"
+    assert_equal "$actual" "$expected" "$msg"
 }
