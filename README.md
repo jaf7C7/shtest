@@ -23,7 +23,8 @@ test_foo_prints_bar ()
 {
     actual=$(foo)
     expected='bar'
-    assert "$actual" "$expected" "'foo' printed '$actual', expected '$expected'"
+    msg="'foo' printed '$actual', expected '$expected'"
+    assert_equal "$actual" "$expected" "$msg"
 }
 ```
 
@@ -47,12 +48,18 @@ test_foo_prints_bar...FAILED:
 Ran 2 test(s):
 Passed: 1
 Failed: 1
+
 ```
 
-Run just tests/a:
+Fix the error:
 ```
-$ ./shtest tests/a
-test_1_is_not_equal_to_0...OK
+$ vi tests/b/test_foo.sh
+```
+
+Run just failing test:
+```
+$ ./shtest tests/b
+test_foo_prints_bar...OK:
 
 Ran 1 test(s):
 Passed: 1
