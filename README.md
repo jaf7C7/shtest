@@ -53,7 +53,7 @@ Fix the error:
 $ vi tests/b/test_foo.sh
 ```
 
-Run just failing test:
+Run just the failing test:
 ```
 $ ./shtest tests/b
 test_foo_prints_bar...OK:
@@ -71,8 +71,8 @@ Passed: 1
 assert() {
 	# Usage: assert <command> [<message>]
 	#
-	# Execute <command>. If it succeeds, return success. Otherwise, print
-	# <message> to stderr and return failure.
+	# Execute <command>. If it succeeds, return success. Otherwise,
+	# print <message> to stderr and return failure.
 	#
 	cmd="$1"
 	msg="$2"
