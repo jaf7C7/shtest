@@ -3,11 +3,30 @@
 # `shtest` : POSIX sh test runner.
 
 main() {
+	if test $# -eq 0; then
+		set -- tests/
+	fi
+
+	for arg in "$@"; do
+		if test -d "$1"; then
+			set -- "$@" $(find "$1" -type f -name 'test_*.sh')
+			shift
+		fi
+
+		if ! test -f "$1"; then
+			err "file not found: $1"
+		fi
+	done
+
+	if test $# -eq 0; then
+		err "no test files found"
+	fi
+
 	total=0
 	passed=0
 	failed=0
 
-	for file in $(find "${@:-tests/}" -name 'test_*.sh'); do
+	for file in "$@"; do
 		for test in $(sed -n '/^test_/s/[ (].*//p' "$file"); do
 			sh <<EOF
 assert() {
@@ -84,7 +103,7 @@ fi
 
 rm "\$__shtest_errfile"
 
-exit \$\(\(__shtest_exit_code\)\)
+exit \$((__shtest_exit_code))
 EOF
 			if test $? -eq 0; then
 				passed=$((passed + 1))
@@ -107,6 +126,11 @@ EOF
 	fi
 
 	echo
+}
+
+err() {
+	printf '%s: %s' "${0##*/}" "$*" >&2
+	exit 1
 }
 
 main "$@"
