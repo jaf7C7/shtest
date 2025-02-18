@@ -9,18 +9,22 @@ First copy the `shtest` executable into the root of your project, or
 into a directory in your `$PATH`, so the script is available to be run
 with either `./shtest` or `shtest`.
 
-Write a couple of quick tests:
-```
-# tests/a/test_not_equal.sh
+Given a project like this:
 
-test_1_is_not_equal_to_0() {
-	! assert_equal 1 0 '1 = 0: Something went wrong!'
-}
 ```
-```
-# tests/b/test_foo.sh
+$ tree
+.
+├── foo.sh
+└── test_foo.sh
 
-. ./main.sh
+1 directory, 2 files
+```
+
+Write a quick test:
+
+```
+# test_foo.sh
+. ./foo.sh
 
 test_foo_prints_bar() {
 	actual=$(foo)
@@ -30,36 +34,52 @@ test_foo_prints_bar() {
 }
 ```
 
-Write a function to satisfy the tests:
+Run the test to see it fail:
+
 ```
-# main.sh
+$ shtest test_foo.sh
+test_foo_prints_bar...FAILED:
+sh: 4: foo: not found
+'foo' printed '', expected 'bar'
+
+Ran 1 test(s):
+Failed: 1
+
+
+```
+
+Write a function to satisfy the test:
+
+```
+# foo.sh
 
 foo() {
 	echo 'foo'
 }
 ```
 
-Run all tests:
+Run the tests:
+
 ```
-$ ./shtest
-test_1_is_not_equal_to_0...OK
+$ shtest test_foo.sh
 test_foo_prints_bar...FAILED:
 'foo' printed 'foo', expected 'bar'
 
-Ran 2 test(s):
-Passed: 1
+Ran 1 test(s):
 Failed: 1
 
 ```
 
-Fix the error:
+Woops! Fix the error:
+
 ```
-$ vi tests/b/test_foo.sh
+$ nano test_foo.sh
 ```
 
-Run just the failing test:
+Run the test again:
+
 ```
-$ ./shtest tests/b
+$ shtest test_foo.sh
 test_foo_prints_bar...OK:
 
 Ran 1 test(s):
