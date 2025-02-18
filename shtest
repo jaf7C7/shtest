@@ -9,7 +9,7 @@ main() {
 
 	for arg in "$@"; do
 		if test -d "$1"; then
-			set -- "$@" $(find "$1" -type f -name 'test_*.sh')
+			set -- "$@" $(find_test_files "$1")
 			shift
 		fi
 
@@ -22,13 +22,45 @@ main() {
 		err "no test files found"
 	fi
 
+	run_all_tests "$@"
+}
+
+err() {
+	printf '%s: %s' "${0##*/}" "$*" >&2
+	exit 1
+}
+
+find_test_files() {
+	find "$1" -type f -name 'test_*.sh'
+}
+
+get_test_names() {
+	sed -n '/^test_/s/[ (].*//p' "$1"
+}
+
+
+run_all_tests() {
 	total=0
 	passed=0
 	failed=0
 
 	for file in "$@"; do
-		for test in $(sed -n '/^test_/s/[ (].*//p' "$file"); do
-			sh <<EOF
+		for test in $(get_test_names "$file"); do
+			if run_test "$test"; then
+				passed=$((passed + 1))
+			else
+				failed=$((failed + 1))
+			fi
+			total=$((total + 1))
+		done
+	done
+
+	report_results "$total" "$passed" "$failed"
+}
+
+run_test() {
+	test="$1"
+	sh <<EOF
 assert() {
 	# Usage: assert <command> [<message>]
 	#
@@ -105,15 +137,12 @@ rm "\$__shtest_errfile"
 
 exit \$((__shtest_exit_code))
 EOF
-			if test $? -eq 0; then
-				passed=$((passed + 1))
-			else
-				failed=$((failed + 1))
-			fi
+}
 
-			total=$((total + 1))
-		done
-	done
+report_results() {
+	total="$1"
+	passed="$2"
+	failed="$3"
 
 	printf '\nRan \033[1m%s\033[m test(s):\n' "$total"
 
@@ -126,11 +155,6 @@ EOF
 	fi
 
 	echo
-}
-
-err() {
-	printf '%s: %s' "${0##*/}" "$*" >&2
-	exit 1
 }
 
 main "$@"
