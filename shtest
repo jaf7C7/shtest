@@ -8,13 +8,13 @@ main() {
 	fi
 
 	for arg in "$@"; do
-		if test -d "$1"; then
-			set -- "$@" $(find_test_files "$1")
+		if test -d "$arg"; then
+			set -- "$@" $(find_test_files "$arg")
 			shift
 		fi
 
-		if ! test -f "$1"; then
-			err "file not found: $1"
+		if ! test -f "$arg"; then
+			err "file not found: $arg"
 		fi
 	done
 
