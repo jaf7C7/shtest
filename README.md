@@ -5,12 +5,16 @@ A simple test runner written in POSIX shell.
 
 ### Quickstart
 
+First copy the `shtest` executable into the root of your project, or
+into a directory in your `$PATH`, so the script is available to be run
+with either `./shtest` or `shtest`.
+
 Write a couple of quick tests:
 ```
 # tests/a/test_not_equal.sh
 
 test_1_is_not_equal_to_0() {
-	! assert_equal 1 0 '1 = 0'
+	! assert_equal 1 0 '1 = 0: Something went wrong!'
 }
 ```
 ```
