@@ -111,7 +111,7 @@ assert_regex_match() {
 	assert "expr '\$output' : '\$regex'" "\$msg"
 }
 
-. "$file"
+. "${PWD}/${file}"
 
 if command -v setup >/dev/null; then
 	setup
