@@ -88,8 +88,8 @@ assert_equal() {
 	expected="\$2"
 	msg="\$3"
 	if test -z "\$msg"; then
-		msg=\$\(printf "expected: '%s'\nactual: '%s'\n" \
-			"\$expected" "\$actual"\)
+		msg=\$(printf "expected: '%s'\nactual: '%s'\n" \\
+			"\$expected" "\$actual")
 	fi
 	assert "test '\$actual' = '\$expected'" "\$msg"
 }
@@ -105,8 +105,8 @@ assert_regex_match() {
 	regex="\$2"
 	msg="\$3"
 	if test -z "\$msg"; then
-		msg=\$\(printf 'regex: /%s/\ndid not match output:\n%s\n' \
-			"\$regex" "\$output"\)
+		msg=\$(printf 'regex: /%s/\ndid not match output:\n%s\n' \\
+			"\$regex" "\$output")
 	fi
 	assert "expr '\$output' : '\$regex'" "\$msg"
 }
