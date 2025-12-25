@@ -60,6 +60,7 @@ run_all_tests() {
 
 run_test() {
 	test="$1"
+
 	sh <<EOF
 assert() {
 	# Usage: assert <command> [<message>]
@@ -70,12 +71,15 @@ assert() {
 	#
 	cmd="\$1"
 	msg="\$2"
+
 	if eval "\$cmd"; then
 		return 0
 	fi
+
 	if test -n "\$msg"; then
 		echo "\$msg" >&2
 	fi
+
 	return 1
 }
 
@@ -88,10 +92,12 @@ assert_equal() {
 	actual="\$1"
 	expected="\$2"
 	msg="\$3"
+
 	if test -z "\$msg"; then
 		msg=\$\(printf "expected: '%s'\nactual: '%s'\n" \
 			"\$expected" "\$actual"\)
 	fi
+
 	assert "test '\$actual' = '\$expected'" "\$msg"
 }
 
@@ -105,10 +111,12 @@ assert_regex_match() {
 	output="\$1"
 	regex="\$2"
 	msg="\$3"
+
 	if test -z "\$msg"; then
 		msg=\$\(printf 'regex: /%s/\ndid not match output:\n%s\n' \
 			"\$regex" "\$output"\)
 	fi
+
 	assert "expr '\$output' : '\$regex'" "\$msg"
 }
 
