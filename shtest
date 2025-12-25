@@ -118,12 +118,12 @@ if command -v setup >/dev/null; then
 	setup
 fi
 
-__shtest_errfile=".${test}.err"
+errfile=".${test}.err"
 printf '%s' "$test"
 
-if "$test" >/dev/null 2>"\$__shtest_errfile"; then
+if "$test" >/dev/null 2>"\$errfile"; then
 	printf '...\033[32m%s\033[m\n' 'OK'
-	__shtest_exit_code=0
+	exit_code=0
 else
 	printf '...\033[1;31m%s\033[m:\n' 'FAILED'
 
@@ -131,16 +131,16 @@ else
 		printf '\033[31m%s\033[m\n' "$line"
 	done <"\$errfile"
 
-	__shtest_exit_code=1
+	exit_code=1
 fi
 
 if command -v teardown >/dev/null; then
 	teardown
 fi
 
-rm "\$__shtest_errfile"
+rm "\$errfile"
 
-exit \$((__shtest_exit_code))
+exit \$((exit_code))
 EOF
 }
 
