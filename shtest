@@ -65,7 +65,8 @@ assert() {
 	# Usage: assert <command> [<message>]
 	#
 	# Execute <command>. If it succeeds, return success. Otherwise,
-	# print <message> to stderr and return failure.
+	# print <message> to stderr and return failure. <command> must be
+	# quoted to make it a single argument.
 	#
 	cmd="\$1"
 	msg="\$2"
