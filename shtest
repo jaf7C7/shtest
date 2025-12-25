@@ -167,7 +167,7 @@ report_results() {
 		printf '\033[31mFailed: \033[1m%s\033[m\n' "$failed"
 	fi
 
-	echo
+	printf '\n'
 }
 
 main "$@"
