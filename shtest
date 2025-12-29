@@ -94,8 +94,8 @@ assert_equal() {
 	msg="\$3"
 
 	if test -z "\$msg"; then
-		msg=\$\(printf "expected: '%s'\nactual: '%s'\n" \
-			"\$expected" "\$actual"\)
+		msg=\$(printf "expected: '%s'\nactual: '%s'\n" \
+			"\$expected" "\$actual")
 	fi
 
 	assert "test '\$actual' = '\$expected'" "\$msg"
@@ -113,8 +113,8 @@ assert_regex_match() {
 	msg="\$3"
 
 	if test -z "\$msg"; then
-		msg=\$\(printf 'regex: /%s/\ndid not match output:\n%s\n' \
-			"\$regex" "\$output"\)
+		msg=\$(printf 'regex: /%s/\ndid not match output:\n%s\n' \
+			"\$regex" "\$output")
 	fi
 
 	assert "expr '\$output' : '\$regex'" "\$msg"
@@ -136,7 +136,7 @@ else
 	printf '...\033[1;31m%s\033[m:\n' 'FAILED'
 
 	while IFS= read -r line; do
-		printf '\033[31m%s\033[m\n' "$line"
+		printf '\033[31m%s\033[m\n' "\$line"
 	done <"\$errfile"
 
 	exit_code=1
